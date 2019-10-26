@@ -23,13 +23,13 @@
 	<Agent name="ModBusAgent">
 		<Monitor class="WindowsDebugger">
 			<Param name="WinDbgPath" value="C:\Program Files (x86)\Windows Kits\10\Debuggers\x64" />
-			<Param name="CommandLine" value="D:\Fuzz-Related\slave_v4_noloop.exe" />
+			<Param name="CommandLine" value="D:\Fuzz-Related\slave_v4_win.exe" />
 			<Param name="RestartOnEachTest" value="true" />
 		</Monitor>
 
 		<Monitor class="Pcap">
 			<Param name="Device" value="Npcap Loopback Adapter" />
-			<Param name="Filter" value="port 503" />
+			<Param name="Filter" value="port 502" />
 		</Monitor>
 	</Agent>
 
@@ -44,7 +44,7 @@
 
 		<Publisher class="TcpClient">
 			<Param name="Host" value="127.0.0.1" />
-			<Param name="Port" value="503" />
+			<Param name="Port" value="502" />
 		</Publisher>
 	</Test>
 
