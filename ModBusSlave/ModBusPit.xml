@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
 
 	<DataModel name="ModBus">
-		<Number name="TransIdentify" size="16" value="00 16"  valueType="hex" signed="false" multable="false" />
+		<Number name="TransIdentify" size="16" value="00 16"  valueType="hex" signed="false" mutable="false" />
 		<Number name="ProtoIdentify" size="16" value="00 00" valueType="hex" signed="false" />
-		<Number name="Length" size="16"  valueType="hex" signed="false" multable="false">
-			<Relation type="size" of="DataSection">
+		<Number name="Length" size="16" valueType="hex" signed="false" mutable="false">
+			<Relation type="size" of="DataSection" />
 		</Number>
 		<Block name="DataSection">
 			<Number name="SlaveAddr" size="8" value="01" valueType="hex" signed="false" />
-			<Number name="FunctionCode" size="8" value="05" valueType="hex" signed="false" multable="false" />
+			<Number name="FunctionCode" size="8" value="05" valueType="hex" signed="false" mutable="false" />
 			<Number name="ReferAddr" size="16" value="00 01" valueType="hex" signed="false" />
 			<Number name="ColiStat" size="16" value="00 00" valueType="hex" signed="false" />
 		</Block>
@@ -32,7 +32,7 @@
 		</Monitor>
 
 		<Monitor class="Memory">
-			<Param name="ProcessName " value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
+			<Param name="ProcessName" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
 		</Monitor>
 
 		<Monitor class="Pcap">
@@ -52,7 +52,6 @@
 			<Param name="Host" value="::1" />
 			<Param name="Port" value="503" />
 		</Publisher>
-
 	</Test>
 
 </Peach>
