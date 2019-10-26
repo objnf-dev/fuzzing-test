@@ -54,4 +54,3 @@ int main(void) {
 	modbus_free(slave);
 	return 0;
 }
-
