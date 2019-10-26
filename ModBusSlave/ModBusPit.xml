@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Peach xmlns="http://peachfuzzer.com/2012/Peach" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://peachfuzzer.com/2012/Peach ../peach.xsd">
+
+	<DataModel name="ModBus">
+		<Number name="TransIdentify" size="16" value="00 16"  valueType="hex" signed="false" multable="false" />
+		<Number name="ProtoIdentify" size="16" value="00 00" valueType="hex" signed="false" />
+		<Number name="Length" size="16"  valueType="hex" signed="false" multable="false">
+			<Relation type="size" of="DataSection">
+		</Number>
+		<Block name="DataSection">
+			<Number name="SlaveAddr" size="8" value="01" valueType="hex" signed="false" />
+			<Number name="FunctionCode" size="8" value="05" valueType="hex" signed="false" multable="false" />
+			<Number name="ReferAddr" size="16" value="00 01" valueType="hex" signed="false" />
+			<Number name="ColiStat" size="16" value="00 00" valueType="hex" signed="false" />
+		</Block>
+	</DataModel>
+	
+	<StateModel name="State" initialState="Main">
+		<State name="Main">
+			<Action type="output">
+				<DataModel ref="ModBus"/>
+			</Action>
+		</State>
+	</StateModel>
+
+	<Agent name="ModBusAgent">
+		<Monitor class="LinuxCrashMonitor" />
+
+		<Monitor class="Process">
+			<Param name="Executable" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
+		</Monitor>
+
+		<Monitor class="Memory">
+			<Param name="ProcessName " value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
+		</Monitor>
+
+		<Monitor class="Pcap">
+			<Param name="Device" value="lo" />
+			<Param name="Filter" value="port 503" />
+		</Monitor>
+	</Agent>
+
+	<Test name="Default">
+		<StateModel ref="State"/>
+		
+		<Logger class="File">
+			<Param name="Path" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/log" />
+		</Logger>
+
+		<Publisher class="TcpClient">
+			<Param name="Host" value="::1" />
+			<Param name="Port" value="503" />
+		</Publisher>
+
+	</Test>
+
+</Peach>
