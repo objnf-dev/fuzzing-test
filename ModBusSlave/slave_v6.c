@@ -22,8 +22,8 @@ int main(void) {
 		return ret_value;
 	}
 
-	// Create connection, Listening on all IPv4 addr
-	slave = modbus_new_tcp_pi("0.0.0.0", "503");
+	// Create connection, Listening on all IPv6 addr
+	slave = modbus_new_tcp_pi("::0", "503");
 	s = modbus_tcp_pi_listen(slave, 1);
 	modbus_tcp_pi_accept(slave, &s);
 	if(s == -1) {

@@ -1,25 +1,23 @@
 // C99 Standard
 
-#include <modbus/modbus-tcp.h>
+#include <modbus-tcp.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include <unistd.h>
 
 int main(void) {
 	// Variable
 	modbus_t *slave = NULL;
 	modbus_mapping_t *localdata = NULL;
-	int s = -1, ret_value = 0;
+	int s = -1;
 
 	// Initalize local data section
 	localdata = modbus_mapping_new(MODBUS_MAX_READ_BITS, MODBUS_MAX_WRITE_BITS, MODBUS_MAX_READ_REGISTERS, MODBUS_MAX_WRITE_REGISTERS);
 	if(localdata == NULL) {
 		printf("Error occoured when mapping data section, Message: %s", modbus_strerror(errno));
-		ret_value = -1;
-		return ret_value;
+		return -1;
 	}
 
 	// Create connection, Listening on all IPv4 addr
@@ -28,8 +26,7 @@ int main(void) {
 	modbus_tcp_pi_accept(slave, &s);
 	if(s == -1) {
 		printf("Error occoured when creating socket. Message: %s", modbus_strerror(errno));
-		ret_value = -1;
-		return ret_value;
+		return -1;
 	}
 
 	// Set debug mode
@@ -41,10 +38,10 @@ int main(void) {
 		memset(query, 0, MODBUS_MAX_ADU_LENGTH);
 
 		// Try to receive query
-		int rc = modbus_receive(slave, query);
-		if(rc == -1) {
-			printf("Error occoured when receiving data. Message: %s", modbus_strerror(errno));
-			ret_value = -1;
+		int rc = -1;
+		rc = modbus_receive(slave, query);
+		if (rc == -1) {
+			printf("Message error or connection closed. Message: %s", modbus_strerror(errno));
 			break;
 		}
 
@@ -55,10 +52,10 @@ int main(void) {
 	}
 
 	// Close Server
-	close(s);
+	closesocket(s);
 	modbus_mapping_free(localdata);
 	modbus_close(slave);
 	modbus_free(slave);
-	return ret_value;
+	return 0;
 }
 

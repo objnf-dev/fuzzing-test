@@ -24,15 +24,15 @@
 		<Monitor class="LinuxCrashMonitor" />
 
 		<Monitor class="Process">
-			<Param name="Executable" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
+			<Param name="Executable" value="D:\Fuzz-Related\slave.exe" />
 		</Monitor>
 
 		<Monitor class="Memory">
-			<Param name="ProcessName" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/slave" />
+			<Param name="ProcessName" value="slave.exe" />
 		</Monitor>
 
 		<Monitor class="Pcap">
-			<Param name="Device" value="lo" />
+			<Param name="Device" value="以太网" />
 			<Param name="Filter" value="port 503" />
 		</Monitor>
 	</Agent>
@@ -41,11 +41,11 @@
 		<StateModel ref="State"/>
 		
 		<Logger class="File">
-			<Param name="Path" value="/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/ModbusSlave/log" />
+			<Param name="Path" value="D:\Fuzz-Related\slave_log" />
 		</Logger>
 
 		<Publisher class="TcpClient">
-			<Param name="Host" value="::1" />
+			<Param name="Host" value="127.0.0.1" />
 			<Param name="Port" value="503" />
 		</Publisher>
 	</Test>
