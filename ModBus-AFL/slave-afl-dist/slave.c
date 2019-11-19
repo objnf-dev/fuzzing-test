@@ -36,23 +36,20 @@ int main(void) {
 	modbus_set_debug(slave, TRUE);
 
 	// Space for master query
-	while(TRUE) {
-		uint8_t query[MODBUS_MAX_ADU_LENGTH];
-		memset(query, 0, MODBUS_MAX_ADU_LENGTH);
+	uint8_t query[MODBUS_MAX_ADU_LENGTH];
+	memset(query, 0, MODBUS_MAX_ADU_LENGTH);
 
-		// Try to receive query
-		int rc = modbus_receive(slave, query);
-		if(rc == -1) {
-			printf("Error occoured when receiving data. Message: %s", modbus_strerror(errno));
-			ret_value = -1;
-			break;
-		}
-
-		// Reply query
-		int rec = modbus_reply(slave, query, rc, localdata);
-		if(rec == -1)
-			printf("Failed to send reply. Message: %s", modbus_strerror(errno));
+	// Try to receive query
+	int rc = modbus_receive(slave, query);
+	if(rc == -1) {
+		printf("Error occoured when receiving data. Message: %s", modbus_strerror(errno));
+		ret_value = -1;
 	}
+
+	// Reply query
+	int rec = modbus_reply(slave, query, rc, localdata);
+	if(rec == -1)
+		printf("Failed to send reply. Message: %s", modbus_strerror(errno));
 
 	// Close Server
 	close(s);
