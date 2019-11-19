@@ -1,0 +1,10 @@
+prefix=/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/libmodbus-afl-dist
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: modbus
+Description: Modbus library
+Version: 3.1.6
+Libs: -L${libdir} -lmodbus
+Cflags: -I${includedir}/modbus
