@@ -1,0 +1,22 @@
+CFLAGS="-fprofile-arcs -ftest-coverage" CC=afl-gcc CXX=afl-g++ ./configure --prefix=/media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/libmodbus-afl-dist --enable-static
+make all
+make install
+
+gcc -c logging.c -o logging.o
+ar rcv logging.a logging.o
+
+gcc -c desock.c -o desock.o
+ar rcv desock.a desock.o
+
+afl-gcc -g -fprofile-arcs -ftest-coverage -o slave -I ../libmodbus-afl-dist/include/modbus slave.c ../libmodbus-afl-dist/lib/libmodbus.so
+afl-gcc -g -fprofile-arcs -ftest-coverage -o slave-static -I ../libmodbus-afl-dist/include/modbus slave.c ../libmodbus-afl-dist/lib/libmodbus.a ./desock.a ./logging.a -l pthread -l dl -l gcov
+
+LD_PRELOAD=../libmodbus-afl-dist/lib/libmodbus.so:../../Fuzzer/preeny-dist/desock.so ./slave
+
+python2 ./afl-cov -d ../../FuzzProj/modbus-honggfuzz/output --live --enable-branch-coverage --code-dir /media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/libmodbus-afl/src --coverage-cmd "cat AFL_FILE | ../../FuzzProj/modbus-honggfuzz/slave-static"
+
+afl-fuzz -i ./data/ -o ./output/ ./slave-static
+
+afl-fuzz -i - -o ./output/ ./slave-static
+
+python2 ./afl-cov -d ../../FuzzProj/modbus-honggfuzz/output --live --enable-branch-coverage --code-dir /media/root/bc0d2c7b-6e6b-4204-86c8-ac651d67d2ae/FuzzProj/libmodbus-afl/src --coverage-cmd "cat AFL_FILE | ../../FuzzProj/modbus-honggfuzz/slave-static" --overwrite
